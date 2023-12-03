@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.techacademy.entity.User;
 import com.techacademy.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserService {
 
@@ -20,5 +22,12 @@ public class UserService {
     public List<User> getUserList(){
         return userRepository.findAll();
 
+    }
+
+    /**Userの登録を行う*/
+    @Transactional
+    public User saveUser(User user) {
+        //引数で渡したエンティティインスタンスのデータをテーブルに保存
+        return userRepository.save(user);
     }
 }
