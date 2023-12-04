@@ -30,4 +30,9 @@ public class UserService {
         //引数で渡したエンティティインスタンスのデータをテーブルに保存
         return userRepository.save(user);
     }
+
+    /**Userを1件検索して返す*/
+    public User getUser(Integer id) {
+        return userRepository.findById(id).get();
+    }
 }
