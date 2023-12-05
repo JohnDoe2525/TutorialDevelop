@@ -40,13 +40,13 @@ public class UserController {
         return "redirect:/user/list";
     }
     /** User更新画面を表示 */
-    @GetMapping("/update/{id}")
+    @GetMapping("/update/{id}/")
     public String getUser(@PathVariable("id") Integer id ,Model model) {
         model.addAttribute("user", service.getUser(id));
-        return "/user/update";
+        return "user/update";
     }
     /** User更新処理 */
-    @PostMapping("/update/{id}")
+    @PostMapping("/update/{id}/")
     public String postUser(User user) {
         service.saveUser(user);
         return "redirect:/user/list";
