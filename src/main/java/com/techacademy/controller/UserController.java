@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +40,10 @@ public class UserController {
     /** User登録処理 */
     @PostMapping("/register")
     //引数にエンティティを指定することで、HTMLのFormの項目値が、引数のuserの属性としてセットされた状態で受け取る
-    public String postRegister(User user) {
+    public String postRegister(@Validated User user,BindingResult res,Model model) {
+        if(res.hasErrors()) {
+            return getRegister(user);
+        }
         service.saveUser(user);
         return "redirect:/user/list";
     }
