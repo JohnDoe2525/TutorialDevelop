@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,6 +60,33 @@ class UserControllerTest {
         User user = (User)result.getModelAndView().getModel().get("user");
         assertEquals(user.getId(), 1);
         assertEquals(user.getName(), "キラメキ太郎");
+    }
+
+    @Test
+    @DisplayName("User一覧画面")
+    @WithMockUser
+    void testGetList() throws Exception {
+        MvcResult result = mockMvc.perform(get("/user/list"))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeExists("userlist"))
+            .andExpect(model().hasNoErrors())
+            .andExpect(view().name("user/list"))
+            .andReturn();
+
+
+        List<User> userlist = (List<User>)result.getModelAndView().getModel().get("userlist");
+        int id[] = {1,2,3}; //検証用ID
+        String name[] = {"キラメキ太郎","キラメキ次郎","キラメキ花子"}; //検証用ユーザー名
+        int cnt = 0;
+
+        assertEquals(userlist.size(),3); //件数
+
+        //userlistから全件取り出して検証用と突合
+        for(User user : userlist) {
+            assertEquals(user.getId(),id[cnt] );
+            assertEquals(user.getName(), name[cnt]);
+            cnt++;
+        }
     }
 
 }
